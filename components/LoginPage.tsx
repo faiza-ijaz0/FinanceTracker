@@ -172,9 +172,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="mt-6 text-center text-xs text-slate-500">
-          Your data is stored locally in your browser — no server, no tracking.
-        </p>
+        
       </div>
     </div>
   );
