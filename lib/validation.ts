@@ -3,7 +3,7 @@ import { z } from "zod";
 export const transactionSchema = z.object({
   type: z.enum(["income", "expense"]),
   amount: z
-    .number({ invalid_type_error: "Amount must be a number" })
+    .number({ error: "Amount must be a number" })
     .positive("Amount must be greater than 0")
     .max(999_999_999, "Amount is too large"),
   description: z

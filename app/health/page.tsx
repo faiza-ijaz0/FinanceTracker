@@ -185,7 +185,7 @@ export default function HealthPage() {
                       color: "#f1f5f9",
                       fontSize: 12,
                     }}
-                    formatter={(v: number) => [`${v}/25`, "Score"]}
+                    formatter={(value) => [`${value ?? 0}/25`, "Score"]}
                   />
                   <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                     {breakdownData.map((item) => (

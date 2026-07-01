@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
-export const staggerContainer = {
+export const staggerContainer: Variants = {
   hidden: {},
   show: {
     transition: {
@@ -11,9 +11,13 @@ export const staggerContainer = {
   },
 };
 
-export const staggerItem = {
+export const staggerItem: Variants = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  },
 };
 
 export function StaggerChildren({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -50,7 +54,7 @@ export function AnimatedCard({
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: "easeOut", delay }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number], delay }}
       className={className}
     >
       {children}

@@ -150,7 +150,10 @@ export default function InsightsPage() {
                       color: "#f1f5f9",
                       fontSize: 12,
                     }}
-                    formatter={(v: number, name: string) => [formatCurrency(v), name === "income" ? "Income" : "Expenses"]}
+                    formatter={(value: any, name: any) => {
+                      const amount = typeof value === "number" ? value : Number(value ?? 0);
+                      return [formatCurrency(amount), name === "income" ? "Income" : "Expenses"];
+                    }}
                   />
                   <Legend
                     formatter={(v) => (v === "income" ? "Income" : "Expenses")}
