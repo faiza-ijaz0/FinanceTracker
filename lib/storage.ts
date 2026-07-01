@@ -1,19 +1,29 @@
-import { STORAGE_KEY, type Transaction } from "./types";
+import type { Transaction } from "./types";
 
-export function loadTransactions(): Transaction[] {
+export function loadTransactions(storageKey: string): Transaction[] {
+  return loadData<Transaction>(storageKey);
+}
+
+export function saveTransactions(
+  storageKey: string,
+  transactions: Transaction[]
+): void {
+  saveData(storageKey, transactions);
+}
+
+export function loadData<T>(key: string): T[] {
   if (typeof window === "undefined") return [];
-
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return [];
-    const parsed = JSON.parse(raw) as Transaction[];
+    const parsed = JSON.parse(raw) as T[];
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
 }
 
-export function saveTransactions(transactions: Transaction[]): void {
+export function saveData<T>(key: string, data: T[]): void {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+  localStorage.setItem(key, JSON.stringify(data));
 }

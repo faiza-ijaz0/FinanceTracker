@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import FinanceCharts from "@/components/FinanceCharts";
 import PageHeader from "@/components/PageHeader";
 import StatCard from "@/components/StatCard";
@@ -7,11 +8,21 @@ import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import { useTransactions } from "@/components/TransactionsProvider";
 import { getTotalIncome } from "@/lib/finance";
+import type { Transaction } from "@/lib/types";
 
 export default function IncomePage() {
-  const { transactions, addTransaction, deleteTransaction } = useTransactions();
+  const { transactions, addTransaction, updateTransaction, deleteTransaction } =
+    useTransactions();
+  const [editingTransaction, setEditingTransaction] =
+    useState<Transaction | null>(null);
+
   const incomeTransactions = transactions.filter((t) => t.type === "income");
   const totalIncome = getTotalIncome(transactions);
+
+  function handleUpdate(id: string, data: Omit<Transaction, "id">) {
+    updateTransaction(id, data);
+    setEditingTransaction(null);
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -31,12 +42,20 @@ export default function IncomePage() {
 
         <div className="grid gap-8 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <TransactionForm onAdd={addTransaction} fixedType="income" />
+            <TransactionForm
+              key={editingTransaction?.id ?? "new"}
+              onAdd={addTransaction}
+              onUpdate={handleUpdate}
+              onCancelEdit={() => setEditingTransaction(null)}
+              editingTransaction={editingTransaction ?? undefined}
+              fixedType="income"
+            />
           </div>
           <div className="lg:col-span-3">
             <TransactionList
               transactions={incomeTransactions}
               onDelete={deleteTransaction}
+              onEdit={setEditingTransaction}
               title="Income Transactions"
               emptyMessage="No income recorded yet. Add your first income entry."
             />
