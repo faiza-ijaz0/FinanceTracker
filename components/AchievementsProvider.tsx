@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -108,11 +109,11 @@ export function AchievementsProvider({ children }: { children: React.ReactNode }
     }
   }, [transactions, budgets, goals, loadedForKey]);
 
-  const earnedIds = new Set(earnedList.map((e) => e.id));
-  const totalXP = earnedList.reduce((sum, e) => {
+  const earnedIds = useMemo(() => new Set(earnedList.map((e) => e.id)), [earnedList]);
+  const totalXP = useMemo(() => earnedList.reduce((sum, e) => {
     const def = ACHIEVEMENT_DEFS.find((d) => d.id === e.id);
     return sum + (def?.xp ?? 0);
-  }, 0);
+  }, 0), [earnedList]);
 
   const isEarned = useCallback((id: string) => earnedIds.has(id), [earnedIds]);
 

@@ -21,9 +21,10 @@ import {
   Lightbulb,
   Star,
   ArrowUpCircle,
+  BarChart2,
 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
-import { StaggerChildren, StaggerItem } from "@/components/AnimatedCard";
+import { StaggerChildren, StaggerItem, HoverCard } from "@/components/AnimatedCard";
 import { useInsights } from "@/hooks/useInsights";
 import type { Insight, InsightType } from "@/lib/insights";
 import { formatCurrency } from "@/lib/finance";
@@ -39,6 +40,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Lightbulb,
   Star,
   ArrowUpCircle,
+  BarChart2,
 };
 
 const TYPE_STYLES: Record<InsightType, { card: string; icon: string; badge: string }> = {
@@ -82,7 +84,7 @@ function InsightCard({ insight }: { insight: Insight }) {
   const IconComponent = ICON_MAP[insight.icon] ?? Lightbulb;
 
   return (
-    <div className={`rounded-2xl border p-5 ${style.card}`}>
+    <HoverCard className={`rounded-2xl border p-5 ${style.card}`}>
       <div className="flex items-start gap-4">
         <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${style.icon}`}>
           <IconComponent size={18} />
@@ -104,7 +106,7 @@ function InsightCard({ insight }: { insight: Insight }) {
           </div>
         )}
       </div>
-    </div>
+    </HoverCard>
   );
 }
 

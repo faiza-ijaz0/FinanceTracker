@@ -151,6 +151,70 @@ export const ACHIEVEMENT_DEFS: AchievementDef[] = [
     },
   },
   {
+    id: "saving-streak-3",
+    title: "Saving Streak",
+    description: "Saved money (income > expenses) for 3 consecutive months",
+    emoji: "🔥",
+    category: "streak",
+    rarity: "rare",
+    xp: 120,
+    check: ({ transactions }) => {
+      const monthMap = new Map<string, { income: number; expenses: number }>();
+      for (const t of transactions) {
+        const key = t.date.slice(0, 7);
+        const entry = monthMap.get(key) ?? { income: 0, expenses: 0 };
+        if (t.type === "income") entry.income += t.amount;
+        else entry.expenses += t.amount;
+        monthMap.set(key, entry);
+      }
+      const sortedMonths = [...monthMap.keys()].sort();
+      let streak = 0;
+      let maxStreak = 0;
+      for (const month of sortedMonths) {
+        const { income, expenses } = monthMap.get(month)!;
+        if (income > expenses) {
+          streak++;
+          if (streak > maxStreak) maxStreak = streak;
+        } else {
+          streak = 0;
+        }
+      }
+      return maxStreak >= 3;
+    },
+  },
+  {
+    id: "saving-streak-6",
+    title: "Half-Year Saver",
+    description: "Saved money for 6 consecutive months",
+    emoji: "💪",
+    category: "streak",
+    rarity: "epic",
+    xp: 280,
+    check: ({ transactions }) => {
+      const monthMap = new Map<string, { income: number; expenses: number }>();
+      for (const t of transactions) {
+        const key = t.date.slice(0, 7);
+        const entry = monthMap.get(key) ?? { income: 0, expenses: 0 };
+        if (t.type === "income") entry.income += t.amount;
+        else entry.expenses += t.amount;
+        monthMap.set(key, entry);
+      }
+      const sortedMonths = [...monthMap.keys()].sort();
+      let streak = 0;
+      let maxStreak = 0;
+      for (const month of sortedMonths) {
+        const { income, expenses } = monthMap.get(month)!;
+        if (income > expenses) {
+          streak++;
+          if (streak > maxStreak) maxStreak = streak;
+        } else {
+          streak = 0;
+        }
+      }
+      return maxStreak >= 6;
+    },
+  },
+  {
     id: "year-tracker",
     title: "Year-Long Journey",
     description: "Tracked finances for 12+ months",

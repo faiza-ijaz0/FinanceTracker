@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
+import PageTransition from "@/components/PageTransition";
 import { useAuth } from "@/components/AuthProvider";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -106,7 +107,9 @@ export default function PageShell({ children }: { children: React.ReactNode }) {
       {/* Main content — offset for desktop sidebar */}
       <div className="lg:pl-64">
         <MobileHeader onMenuClick={() => setSidebarOpen(true)} />
-        <main>{children}</main>
+        <main>
+          <PageTransition>{children}</PageTransition>
+        </main>
       </div>
     </div>
   );

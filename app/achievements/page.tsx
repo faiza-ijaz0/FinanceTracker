@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import PageHeader from "@/components/PageHeader";
 import { StaggerChildren, StaggerItem } from "@/components/AnimatedCard";
 import { useAchievements } from "@/components/AchievementsProvider";
@@ -147,8 +148,11 @@ export default function AchievementsPage() {
                 const earned = earnedIds.has(def.id);
                 const earnedAt = earnedList.find((e) => e.id === def.id)?.earnedAt;
                 return (
-                  <div
+                  <motion.div
                     key={def.id}
+                    whileHover={earned ? { y: -3, boxShadow: "0 8px 24px rgba(0,0,0,0.10)" } : { scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
                     className={`rounded-2xl border-2 p-4 transition ${
                       earned
                         ? `${RARITY_COLORS[def.rarity]} bg-white shadow-sm dark:bg-white/5`
@@ -187,7 +191,7 @@ export default function AchievementsPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>

@@ -231,6 +231,26 @@ export function generateInsights(data: {
     }
   }
 
+  // ── 10. Monthly financial summary ───────────────────────────────────────
+  if (cur.income > 0 || cur.expenses > 0) {
+    const monthlySavings = cur.income - cur.expenses;
+    const savingsRate = cur.income > 0 ? Math.round((monthlySavings / cur.income) * 100) : 0;
+    const monthName = now.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    const savingsText =
+      monthlySavings >= 0
+        ? `Net savings: ${formatCurrency(monthlySavings)} (${savingsRate}% rate)`
+        : `Net deficit: ${formatCurrency(Math.abs(monthlySavings))}`;
+    insights.push({
+      id: "monthly-summary",
+      type: "info",
+      title: `${monthName} Summary`,
+      description: `Income ${formatCurrency(cur.income)} · Expenses ${formatCurrency(cur.expenses)} · ${savingsText}.`,
+      icon: "BarChart2",
+      metric: cur.income > 0 ? `${savingsRate}%` : undefined,
+      priority: 40,
+    });
+  }
+
   return insights.sort((a, b) => b.priority - a.priority);
 }
 
